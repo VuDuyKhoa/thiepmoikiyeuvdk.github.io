@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Kỷ Yếu 2 Mặt Cân Đối</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #d4af37;
+            --dark-red: #800000;
+            --card-w: 360px; /* Chiều rộng 1 trang */
+            --card-h: 580px; /* Chiều cao (Cao > Rộng) */
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Khung cảnh 3D */
+        .scene {
+            perspective: 2000px;
+            width: var(--card-w);
+            height: var(--card-h);
+        }
+
+        /* Container thiệp */
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        /* Khi mở: Dịch sang phải 50% chiều rộng để gáy thiệp nằm giữa web */
+        .card.open {
+            transform: translateX(50%);
+        }
+
+        /* Định nghĩa chung cho các trang */
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 5px;
+            box-sizing: border-box;
+            border: 2px solid var(--primary-gold);
+            background-color: #fff;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+        }
+
+        /* --- CÁNH TRÁI (BÌA VÀ LỜI CHÚC) --- */
+        .left-page {
+            z-index: 2;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card.open .left-page {
+            transform: rotateY(-180deg);
+        }
+
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        /* Mặt bìa ngoài */
+        .front {
+            background: linear-gradient(135deg, var(--dark-red), #600000);
+            color: var(--primary-gold);
+            z-index: 2;
+        }
+
+        .front h2 { font-family: 'Cinzel', serif; letter-spacing: 4px; text-align: center; }
+        .front .decor { font-size: 60px; margin: 20px 0; }
+
+        /* Trang LỜI CHÚC (Mặt trong bên trái) */
+        .back {
+            transform: rotateY(180deg);
+            background: #fdfdfd;
+            border-right: 1px solid #ddd;
+        }
+
+        .back h3 { 
+            font-family: 'Great Vibes', cursive; 
+            font-size: 2.5rem; 
+            color: var(--dark-red); 
+            margin-bottom: 20px;
+        }
+
+        .wish-text {
+            font-style: italic;
+            line-height: 1.8;
+            color: #444;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        /* --- TRANG PHẢI (THÔNG TIN CHI TIẾT) --- */
+        .right-page {
+            z-index: 1;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .right-page h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--dark-red);
+            margin: 0 0 20px 0;
+            border-bottom: 2px solid var(--primary-gold);
+            padding-bottom: 10px;
+            width: 100%;
+        }
+
+        .info-group { margin-bottom: 15px; }
+        .label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 2px; }
+        .value { font-size: 1.1rem; color: #000; font-weight: 600; margin-top: 5px; }
+
+        .invitation-text {
+            margin-top: 25px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8rem;
+            color: var(--dark-red);
+        }
+
+        /* Nút mở */
+        .open-btn {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: none;
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            font-family: 'Cinzel';
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .open-btn:hover { background: var(--primary-gold); color: white; }
+    </style>
+</head>
+<body>
+
+<div class="scene">
+    <div class="card" id="card" onclick="toggleCard()">
+        
+        <div class="page left-page">
+            <div class="front">
+                <p style="margin: 0;">CLASS OF 2026</p>
+                <h2>THƯ MỜI KỶ YẾU</h2>
+                <div class="decor">🎓</div>
+                <button class="open-btn">MỞ THIỆP</button>
+            </div>
+            
+            <div class="back">
+                <h3>Lời chúc...</h3>
+                <p class="wish-text">
+                    "Thanh xuân giống như một cơn mưa rào, dù cho bạn từng bị cảm lạnh vì tắm mưa, bạn vẫn muốn được đắm mình trong cơn mưa ấy lần nữa."
+                    <br><br>
+                    Chúc cho tất cả chúng ta sẽ luôn rực rỡ và thành công trên con đường phía trước!
+                </p>
+                <div style="margin-top: 30px; color: var(--primary-gold);">✦ ✦ ✦</div>
+            </div>
+        </div>
+
+        <div class="page right-page">
+            <h1>THÔNG TIN TIỆC</h1>
+            
+            <div class="info-group">
+                <div class="label">Họ và tên</div>
+                <div class="value">Vũ Duy Khoa</div>
+            </div>
+
+            <div class="info-group">
+                <div class="label">Lớp - Trường</div>
+                <div class="value">12A1 - THPT Tứ Sơn</div>
+            </div>
+
+            <div class="info-group">
+                <div class="label">Thời gian</div>
+                <div class="value">08:00 | 08 Tháng 03, 2026</div>
+            </div>
+
+            <div class="info-group">
+                <div class="label">Địa điểm</div>
+                <div class="value">Trường THPT Tứ Sơn<br>Trường Sơn , Bắc Ninh</div>
+            </div>
+
+            <div class="invitation-text">
+                Trân trọng kính mời!
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    function toggleCard() {
+        document.getElementById('card').classList.toggle('open');
+    }
+</script>
+
+</body>
+</html>
