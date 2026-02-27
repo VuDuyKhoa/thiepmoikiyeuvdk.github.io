@@ -7,180 +7,199 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --primary-gold: #d4af37;
-            --dark-red: #800000;
-            --card-w: 360px; /* Chiều rộng 1 trang */
-            --card-h: 580px; /* Chiều cao (Cao > Rộng) */
-        }
+:root {
+    --primary-gold: #d4af37;
+    --dark-red: #800000;
 
-        body {
+    /* Card tự co theo màn hình */
+    --card-w: min(92vw, 360px);
+    --card-h: calc(var(--card-w) * 1.6);
+}
+
+body {
     margin: 0;
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     justify-content: center;
     align-items: center;
     background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
     font-family: 'Montserrat', sans-serif;
-    overflow-x: hidden; /* chỉ ẩn ngang */
+    overflow-x: hidden;
+    padding: 10px;
 }
 
-        /* Khung cảnh 3D */
-        .scene {
-            perspective: 2000px;
-            width: var(--card-w);
-            height: var(--card-h);
-        }
+/* Khung cảnh 3D */
+.scene {
+    perspective: 2000px;
+    width: var(--card-w);
+    height: var(--card-h);
+    max-width: 100%;
+}
 
-        /* Container thiệp */
-        .card {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-        
-        /* Khi mở: Dịch sang phải 50% chiều rộng để gáy thiệp nằm giữa web */
-        .card.open {
-            transform: translateX(50%);
-        }
+/* Container thiệp */
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
 
-        /* Định nghĩa chung cho các trang */
-        .page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            border-radius: 5px;
-            box-sizing: border-box;
-            border: 2px solid var(--primary-gold);
-            background-color: #fff;
-            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
-        }
+/* Khi mở */
+.card.open {
+    transform: translateX(calc(var(--card-w) / 2));
+}
 
-        /* --- CÁNH TRÁI (BÌA VÀ LỜI CHÚC) --- */
-        .left-page {
-            z-index: 2;
-            transform-origin: left;
-            transform-style: preserve-3d;
-            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* Trang chung */
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border: 2px solid var(--primary-gold);
+    background-color: #fff;
+    background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+}
 
-        .card.open .left-page {
-            transform: rotateY(-180deg);
-        }
+/* Cánh trái */
+.left-page {
+    z-index: 2;
+    transform-origin: left;
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        .front, .back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            box-sizing: border-box;
-        }
+.card.open .left-page {
+    transform: rotateY(-180deg);
+}
 
-        /* Mặt bìa ngoài */
-        .front {
-            background: linear-gradient(135deg, var(--dark-red), #600000);
-            color: var(--primary-gold);
-            z-index: 2;
-        }
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    box-sizing: border-box;
+}
 
-        .front h2 { font-family: 'Cinzel', serif; letter-spacing: 4px; text-align: center; }
-        .front .decor { font-size: 60px; margin: 20px 0; }
+/* Mặt trước */
+.front {
+    background: linear-gradient(135deg, var(--dark-red), #600000);
+    color: var(--primary-gold);
+    z-index: 2;
+}
 
-        /* Trang LỜI CHÚC (Mặt trong bên trái) */
-        .back {
-            transform: rotateY(180deg);
-            background: #fdfdfd;
-            border-right: 1px solid #ddd;
-        }
+.front h2 {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 4px;
+    text-align: center;
+}
 
-        .back h3 { 
-            font-family: 'Great Vibes', cursive; 
-            font-size: 2.5rem; 
-            color: var(--dark-red); 
-            margin-bottom: 20px;
-        }
+.front .decor {
+    font-size: 60px;
+    margin: 20px 0;
+}
 
-        .wish-text {
-            font-style: italic;
-            line-height: 1.8;
-            color: #444;
-            text-align: center;
-            font-size: 1rem;
-        }
+/* Mặt sau trái */
+.back {
+    transform: rotateY(180deg);
+    background: #fdfdfd;
+    border-right: 1px solid #ddd;
+}
 
-        /* --- TRANG PHẢI (THÔNG TIN CHI TIẾT) --- */
-        .right-page {
-            z-index: 1;
-            padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
-        }
+.back h3 { 
+    font-family: 'Great Vibes', cursive; 
+    font-size: 2.2rem; 
+    color: var(--dark-red); 
+    margin-bottom: 20px;
+}
 
-        .right-page h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: var(--dark-red);
-            margin: 0 0 20px 0;
-            border-bottom: 2px solid var(--primary-gold);
-            padding-bottom: 10px;
-            width: 100%;
-        }
+.wish-text {
+    font-style: italic;
+    line-height: 1.8;
+    color: #444;
+    text-align: center;
+    font-size: 0.95rem;
+}
 
-        .info-group { margin-bottom: 15px; }
-        .label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 2px; }
-        .value { font-size: 1.1rem; color: #000; font-weight: 600; margin-top: 5px; }
+/* Trang phải */
+.right-page {
+    z-index: 1;
+    padding: 40px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+}
 
-        .invitation-text {
-            margin-top: 25px;
-            font-family: 'Great Vibes', cursive;
-            font-size: 1.8rem;
-            color: var(--dark-red);
-        }
+.right-page h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    color: var(--dark-red);
+    margin: 0 0 20px 0;
+    border-bottom: 2px solid var(--primary-gold);
+    padding-bottom: 10px;
+    width: 100%;
+}
 
-        /* Nút mở */
-        .open-btn {
-            margin-top: 30px;
-            padding: 12px 25px;
-            background: none;
-            border: 1px solid var(--primary-gold);
-            color: var(--primary-gold);
-            font-family: 'Cinzel';
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .open-btn:hover { background: var(--primary-gold); color: white; }
-   /* ================= MOBILE FIX ================= */
-@media (max-width: 480px) {
+.info-group {
+    margin-bottom: 15px;
+}
 
-    :root {
-        --card-w: 90vw;
-        --card-h: 85vh;
-    }
+.label {
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
 
+.value {
+    font-size: 1rem;
+    color: #000;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.invitation-text {
+    margin-top: 25px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.6rem;
+    color: var(--dark-red);
+}
+
+/* Nút mở */
+.open-btn {
+    margin-top: 30px;
+    padding: 12px 25px;
+    background: none;
+    border: 1px solid var(--primary-gold);
+    color: var(--primary-gold);
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.open-btn:hover {
+    background: var(--primary-gold);
+    color: white;
+}
+
+/* Tối ưu màn rất nhỏ */
+@media (max-width: 350px) {
     .scene {
-        width: var(--card-w);
-        height: var(--card-h);
-    }
-
-    /* Khi mở chỉ dịch 30% thay vì 50% */
-    .card.open {
-        transform: translateX(30%);
+        transform: scale(0.92);
     }
 }
-   </style>
+</style>
 </head>
 <body>
 
