@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thiệp Kỷ Yếu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
 :root {
     --primary-gold: #d4af37;
+    --light-gold: #f3e5ab;
     --dark-red: #800000;
-
-    /* Card tự co theo màn hình */
     --card-w: min(92vw, 360px);
     --card-h: calc(var(--card-w) * 1.6);
 }
@@ -22,10 +21,32 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
+    /* LIGHT THEME MỚI: Trắng ngọc trai / Kem sang trọng */
+    background: radial-gradient(circle at center, #ffffff 0%, #fdfbf7 40%, #eaddc5 100%);
     font-family: 'Montserrat', sans-serif;
-    overflow-x: hidden;
+    overflow: hidden; /* Ẩn scroll do particles */
     padding: 10px;
+}
+
+/* HIỆU ỨNG HẠT BỤI VÀNG LƠ LỬNG (WOW EFFECT) */
+.particles {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--primary-gold);
+    box-shadow: 0 0 10px var(--primary-gold), 0 0 20px var(--light-gold);
+    animation: floatParticle linear infinite;
+    opacity: 0.6;
+}
+@keyframes floatParticle {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
 }
 
 /* Khung cảnh 3D */
@@ -34,6 +55,13 @@ body {
     width: var(--card-w);
     height: var(--card-h);
     max-width: 100%;
+    z-index: 10;
+    /* Hiệu ứng trôi nổi nhẹ nhàng cho toàn bộ thiệp */
+    animation: hoverCard 4s ease-in-out infinite alternate;
+}
+@keyframes hoverCard {
+    0% { transform: translateY(-5px); }
+    100% { transform: translateY(5px); }
 }
 
 /* Container thiệp */
@@ -42,13 +70,16 @@ body {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* Mượt hơn */
     cursor: pointer;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15); /* Bóng đổ cho nền sáng */
+    border-radius: 5px;
 }
 
 /* Khi mở */
 .card.open {
     transform: translateX(calc(var(--card-w) / 2));
+    box-shadow: -20px 20px 50px rgba(0,0,0,0.1);
 }
 
 /* Trang chung */
@@ -60,7 +91,6 @@ body {
     left: 0;
     border-radius: 5px;
     box-sizing: border-box;
-    border: 2px solid var(--primary-gold);
     background-color: #fff;
     background-image: url('https://www.transparenttextures.com/patterns/paper.png');
 }
@@ -70,11 +100,12 @@ body {
     z-index: 2;
     transform-origin: left;
     transform-style: preserve-3d;
-    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .card.open .left-page {
     transform: rotateY(-180deg);
+    box-shadow: inset -10px 0 20px rgba(0,0,0,0.05); /* Bóng gập sách */
 }
 
 .front, .back {
@@ -88,49 +119,76 @@ body {
     align-items: center;
     padding: 30px;
     box-sizing: border-box;
+    border-radius: 5px;
 }
 
 /* Mặt trước */
 .front {
-    background: linear-gradient(135deg, var(--dark-red), #600000);
+    /* Nền nhung đỏ kết hợp viền sang trọng */
+    background: linear-gradient(135deg, var(--dark-red) 0%, #4a0000 100%);
+    border: 2px solid var(--primary-gold);
     color: var(--primary-gold);
     z-index: 2;
+    box-shadow: inset 0 0 0 8px rgba(212, 175, 55, 0.2); /* Viền kép */
+}
+.front::before {
+    content: '';
+    position: absolute;
+    top: 15px; left: 15px; right: 15px; bottom: 15px;
+    border: 1px dashed var(--primary-gold);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.front p {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 2px;
+    color: var(--light-gold);
+    margin: 0;
+    font-size: 0.9rem;
 }
 
 .front h2 {
     font-family: 'Cinzel', serif;
     letter-spacing: 4px;
     text-align: center;
+    font-size: 1.8rem;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); /* Glow chữ vàng */
+    margin-top: 10px;
 }
 
 .front .decor {
     font-size: 60px;
     margin: 20px 0;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
 }
 
-/* Mặt sau trái */
+/* Mặt sau trái (bên trong thiệp) */
 .back {
     transform: rotateY(180deg);
-    background: #fdfdfd;
-    border-right: 1px solid #ddd;
+    background: #fcfbf9;
+    border: 2px solid var(--primary-gold);
+    box-shadow: inset 0 0 0 6px #fff, inset 0 0 0 7px var(--primary-gold);
 }
 
 .back h3 { 
     font-family: 'Great Vibes', cursive; 
-    font-size: 2.2rem; 
+    font-size: 2.5rem; 
     color: var(--dark-red); 
     margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .wish-text {
     font-style: italic;
-    line-height: 1.8;
+    line-height: 1.9;
     color: #444;
     text-align: center;
     font-size: 0.95rem;
+    padding: 0 10px;
 }
 
-/* Trang phải */
+/* Trang phải (Mặt thông tin tiệc) */
 .right-page {
     z-index: 1;
     padding: 40px 25px;
@@ -138,59 +196,99 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+    border: 2px solid var(--primary-gold);
+    background: #fcfbf9;
+    /* Hiệu ứng viền cổ điển bên trong */
+    box-shadow: inset 0 0 0 6px #fff, inset 0 0 0 7px var(--primary-gold), 10px 10px 30px rgba(0,0,0,0.1);
 }
 
 .right-page h1 {
     font-family: 'Cinzel', serif;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: var(--dark-red);
-    margin: 0 0 20px 0;
+    margin: 0 0 25px 0;
     border-bottom: 2px solid var(--primary-gold);
     padding-bottom: 10px;
-    width: 100%;
+    width: 90%;
+    position: relative;
+}
+.right-page h1::after {
+    content: '✦';
+    position: absolute;
+    bottom: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fcfbf9;
+    padding: 0 10px;
+    color: var(--primary-gold);
+    font-size: 12px;
 }
 
 .info-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    width: 100%;
 }
 
 .label {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: #888;
     text-transform: uppercase;
     letter-spacing: 2px;
+    font-family: 'Cinzel', serif;
 }
 
 .value {
-    font-size: 1rem;
-    color: #000;
+    font-size: 1.05rem;
+    color: #222;
     font-weight: 600;
     margin-top: 5px;
 }
 
 .invitation-text {
-    margin-top: 25px;
+    margin-top: auto; /* Đẩy xuống cuối */
     font-family: 'Great Vibes', cursive;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     color: var(--dark-red);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.05);
 }
 
-/* Nút mở */
+/* Nút mở WOW */
 .open-btn {
     margin-top: 30px;
-    padding: 12px 25px;
-    background: none;
+    padding: 12px 30px;
+    background: rgba(212, 175, 55, 0.1);
     border: 1px solid var(--primary-gold);
     color: var(--primary-gold);
     font-family: 'Cinzel', serif;
+    font-weight: bold;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.4s ease;
+    border-radius: 30px; /* Bo góc mượt mà */
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.open-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+    z-index: -1;
 }
 
 .open-btn:hover {
     background: var(--primary-gold);
-    color: white;
+    color: #fff;
+    box-shadow: 0 0 15px var(--primary-gold);
+}
+
+.open-btn:hover::before {
+    left: 100%;
 }
 
 /* Tối ưu màn rất nhỏ */
@@ -203,13 +301,15 @@ body {
 </head>
 <body>
 
+<div class="particles" id="particles"></div>
+
 <div class="scene">
     <div class="card" id="card" onclick="toggleCard()">
         
         <div class="page left-page">
             <div class="front">
-                <p style="margin: 0;">CLASS OF 2026</p>
-                <h2>THIỆP MỜI KỶ YẾU</h2>
+                <p>CLASS OF 2026</p>
+                <h2>THIỆP MỜI<br>KỶ YẾU</h2>
                 <div class="decor">🎓</div>
                 <button class="open-btn">MỞ THIỆP</button>
             </div>
@@ -221,7 +321,7 @@ body {
                     <br><br>
                     Chúc cho tất cả chúng ta sẽ luôn rực rỡ và thành công trên con đường phía trước!
                 </p>
-                <div style="margin-top: 30px; color: var(--primary-gold);">✦ ✦ ✦</div>
+                <div style="margin-top: 30px; color: var(--primary-gold); font-size: 1.5rem;">✦ ✦ ✦</div>
             </div>
         </div>
 
@@ -257,9 +357,38 @@ body {
 </div>
 
 <script>
+    // Hàm mở/đóng thiệp giữ nguyên
     function toggleCard() {
         document.getElementById('card').classList.toggle('open');
     }
+
+    // Script tạo hiệu ứng hạt bụi vàng (gold dust) bay bay ngẫu nhiên
+    function createParticles() {
+        const particleContainer = document.getElementById('particles');
+        const particleCount = 25; // Số lượng hạt bụi
+
+        for (let i = 0; i < particleCount; i++) {
+            let particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random kích thước, vị trí, thời gian bay
+            let size = Math.random() * 4 + 2; 
+            let left = Math.random() * 100;
+            let duration = Math.random() * 6 + 4;
+            let delay = Math.random() * 5;
+
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = left + '%';
+            particle.style.animationDuration = duration + 's';
+            particle.style.animationDelay = delay + 's';
+
+            particleContainer.appendChild(particle);
+        }
+    }
+
+    // Chạy tạo hiệu ứng khi tải xong trang
+    window.onload = createParticles;
 </script>
 
 </body>
