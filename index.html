@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiệp mời kỷ yếu</title>
+    <title>Thiệp Kỷ Yếu</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -15,15 +15,15 @@
         }
 
         body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
-            font-family: 'Montserrat', sans-serif;
-            overflow: hidden;
-        }
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden; /* chỉ ẩn ngang */
+}
 
         /* Khung cảnh 3D */
         .scene {
@@ -162,7 +162,25 @@
             transition: 0.3s;
         }
         .open-btn:hover { background: var(--primary-gold); color: white; }
-    </style>
+   /* ================= MOBILE FIX ================= */
+@media (max-width: 480px) {
+
+    :root {
+        --card-w: 90vw;
+        --card-h: 85vh;
+    }
+
+    .scene {
+        width: var(--card-w);
+        height: var(--card-h);
+    }
+
+    /* Khi mở chỉ dịch 30% thay vì 50% */
+    .card.open {
+        transform: translateX(30%);
+    }
+}
+   </style>
 </head>
 <body>
 
@@ -172,7 +190,7 @@
         <div class="page left-page">
             <div class="front">
                 <p style="margin: 0;">CLASS OF 2026</p>
-                <h2>THƯ MỜI KỶ YẾU</h2>
+                <h2>THIỆP MỜI KỶ YẾU</h2>
                 <div class="decor">🎓</div>
                 <button class="open-btn">MỞ THIỆP</button>
             </div>
@@ -189,7 +207,7 @@
         </div>
 
         <div class="page right-page">
-            <h1>THÔNG TIN</h1>
+            <h1>THÔNG TIN TIỆC</h1>
             
             <div class="info-group">
                 <div class="label">Họ và tên</div>
@@ -226,5 +244,4 @@
 </script>
 
 </body>
-
 </html>
